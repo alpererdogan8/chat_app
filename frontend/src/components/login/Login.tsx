@@ -16,7 +16,7 @@ export const Login = () => {
           <Input placeholder="Username or Email" />
           <Input placeholder="Password" />
           <div className="w-full flex flex-row justify-center ">
-            <Button type="submit" className="w-8/12" variantType="primary">
+            <Button type="submit" className="w-full" variantType="primary">
               Login
             </Button>
           </div>
