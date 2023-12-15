@@ -11,7 +11,7 @@ export const LoginFormPage = () => {
   return (
     //  w-5/12 md:6/12
     <div className="w-full md:w-12/12 lg:w-6/12 h-[100dvh] flex justify-center items-center">
-      <div className="w-full gap-4 md:gap-5 h-min inline-flex justify-center md:justify-end items-center">
+      <div className="w-full gap-0 lg:gap-2 h-min inline-flex justify-center md:justify-end items-center">
         {!authToggle ? <Login /> : <Register />}
         <div className=" self-start -mr-8 md:mr-5 ">
           <Button
