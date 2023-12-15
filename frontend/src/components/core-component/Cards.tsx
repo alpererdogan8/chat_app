@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import React, { forwardRef, ForwardRefExoticComponent } from "react";
-const variantsCards = cva("rounded-xl", {
+const variantsCards = cva({
   variants: {
     bordered: {
-      true: "border-border border",
+      true: "border-border border rounded-xl",
       false: "",
     },
   },
