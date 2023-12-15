@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { LoginFormPage } from "./LoginFormPage";
-import { LoginImagePage } from "./LoginImagePage";
+import { LoginFormPage } from "@/pages/login/LoginFormPage";
+import { LoginImagePage } from "@/pages/login/LoginImagePage";
 
 export const LoginPage = () => {
   return (
