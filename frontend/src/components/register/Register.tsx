@@ -18,7 +18,7 @@ export const Register = () => {
           <Input placeholder="Password" required />
           <Input placeholder="Enter password again" required />
           <div className="w-full flex flex-row justify-center ">
-            <Button type="submit" className="w-8/12" variantType="primary">
+            <Button type="submit" className="w-full" variantType="primary">
               Register
             </Button>
           </div>
