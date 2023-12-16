@@ -44,7 +44,7 @@ export const CreateRoom = () => {
         <Plus width={16} />
         <Cards
           bordered
-          className="hidden group-hover:inline-flex  rounded-md mt-20  bg-background absolute px-4 py-1 text-sm">
+          className="hidden group-hover:inline-flex  rounded-md mt-20 z-40  bg-background absolute px-4 py-1 text-sm">
           Create Room
         </Cards>
       </Button>
