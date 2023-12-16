@@ -30,12 +30,12 @@ export const Profile = () => {
             <Settings width={16} />
             <Cards
               bordered
-              className="hidden focus:hidden group-hover:inline-flex group-active:hidden  rounded-md mt-20 mr-8   bg-background absolute px-4 py-1 text-sm">
+              className="hidden focus:hidden group-hover:inline-flex group-active:hidden  rounded-md mt-20 mr-8   bg-background absolute px-4 py-1 z-40 text-sm">
               Logout
             </Cards>
           </Button>
           {!dropdown && (
-            <div ref={refDropdown} className="absolute -mr-2 mt-[48px]">
+            <div ref={refDropdown} className="absolute z-40 -mr-2 mt-[48px]">
               <Cards.Content
                 className={cn(
                   { hidden: dropdown },
