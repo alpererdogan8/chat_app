@@ -1,33 +1,23 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { ChatPage } from "./pages/chat/ChatPage";
+import { LoginPage } from "./pages/login/LoginPage";
+import { Navigate, Outlet, Route, RouteProps, Routes } from "react-router-dom";
+
+const isAuthenticated = () => {
+  return true;
+};
+const PrivateRoute: React.FC<RouteProps> = () => {
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace={true} />;
+};
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button className="text-slate-950 bg-orange-400" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <Routes>
+      <Route path="/" element={<PrivateRoute />}>
+        <Route index element={<Navigate to="/chat" />} />
+        <Route path="chat" element={<ChatPage />} />
+      </Route>
+      <Route path="login" element={isAuthenticated() ? <Navigate to="/" /> : <LoginPage />} />
+    </Routes>
   );
 }
-
 export default App;
