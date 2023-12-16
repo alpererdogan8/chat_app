@@ -1,5 +1,5 @@
-import { ChatPage } from "./pages/Chat/ChatPage";
-import { LoginPage } from "./pages/Login/LoginPage";
+import { ChatPage } from "./pages/chat/ChatPage";
+import { LoginPage } from "./pages/login/LoginPage";
 import { Navigate, Outlet, Route, RouteProps, Routes } from "react-router-dom";
 
 const isAuthenticated = () => {
