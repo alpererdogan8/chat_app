@@ -2,7 +2,6 @@ import { Document, Error, Model, PassportLocalDocument, PassportLocalModel, Save
 import MainService from "./MainService";
 import User from "../database/models/User";
 import passportConfig from "../config/passportConfig";
-import { Request, Response, NextFunction } from "express";
 type SignupType = {
   username: string;
   email: string;
