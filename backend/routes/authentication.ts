@@ -10,7 +10,7 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
 router.post("/signup", async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   await AuthService.signup({ username, email, password });
-  res.json({ success: "OK", message: "user successfuly created" });
+  res.json({ success: 200, message: "user successfuly created" });
 });
 
 router.get("/user-profile", isAuth, (req: Request, res: Response) => {
