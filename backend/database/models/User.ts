@@ -14,7 +14,6 @@ export interface IUserModal extends Document {
   timestamp?: Date;
 }
 
-// interface UserModelType extends PassportLocalModel<IUserModal> {}
 const UserSchema = new mongoose.Schema<IUserModal>({
   username: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
