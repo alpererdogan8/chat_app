@@ -1,6 +1,6 @@
 import { Document, Error, Model, PassportLocalDocument, PassportLocalModel, SaveOptions } from "mongoose";
 import MainService from "./MainService";
-import User from "../database/models/User";
+import User, { IUserModal } from "../database/models/User";
 import passportConfig from "../config/passportConfig";
 type SignupType = {
   username: string;
@@ -8,7 +8,7 @@ type SignupType = {
   password: string;
 };
 
-class AuthService extends MainService {
+class AuthService extends MainService<IUserModal> {
   initialize: any;
   session: any;
   constructor(model: any) {
@@ -21,7 +21,7 @@ class AuthService extends MainService {
       const userExist: any = await this.findBy("email", email);
       if (userExist) throw { message: "Email already exists", status: 409 };
       if (userExist === null) {
-        const newUser = new this.model({
+        const newUser = new this.modal({
           email,
           username,
         }) as PassportLocalDocument;
@@ -38,7 +38,7 @@ class AuthService extends MainService {
     return passportConfig.authenticate("local");
   }
   isOnline(state: boolean) {
-    return this.model.updateOne({ isOnline: state });
+    return this.modal.updateOne({ isOnline: state });
   }
 }
 
