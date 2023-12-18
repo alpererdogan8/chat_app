@@ -29,9 +29,9 @@ const sessionMiddleware = session({
     path: "/",
   },
 });
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.use(morgan("dev"));
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: [process.env.FRONTEND_CORS_ORIGIN!], credentials: true }));
 app.use(sessionMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
