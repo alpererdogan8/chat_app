@@ -10,7 +10,6 @@ export interface IUserModal extends Document {
     salt: string;
   };
   isOnline?: object;
-  chatRooms: mongoose.Types.ObjectId[];
   timestamp?: Date;
 }
 
@@ -21,7 +20,6 @@ const UserSchema = new mongoose.Schema<IUserModal>({
     hash: String,
     salt: String,
   },
-  chatRooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "ChatRoom", autopopulate: false }],
   timestamp: { type: Date, default: Date.now },
   isOnline: { type: Boolean, default: false },
 });

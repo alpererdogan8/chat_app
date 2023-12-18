@@ -1,18 +1,19 @@
 import mongoose, { Document } from "mongoose";
-
-type sender = { type: string; unique: boolean; required: boolean };
-type message = { type: string; required: boolean };
+import mongooseAutoPopulate from "mongoose-autopopulate";
 
 export interface IMessageSchema extends Document {
-  sender: sender;
-  message: message;
+  sender: string;
+  message: string;
   timestamp: Date;
 }
 
-const MessageSchema = new mongoose.Schema<IMessageSchema>({
-  sender: { type: String, unique: true, required: true },
+const MessageSchema = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User", autopopulate: true },
   message: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
 });
 
-export default mongoose.model<IMessageSchema>("Message", MessageSchema);
+MessageSchema.plugin(mongooseAutoPopulate);
+const MessageModel = mongoose.model("Message", MessageSchema);
+
+export default MessageModel;
