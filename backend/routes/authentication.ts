@@ -15,8 +15,7 @@ router.post("/signup", async (req: Request, res: Response) => {
 
 router.get("/user-profile", isAuth, (req: Request, res: Response) => {
   try {
-    const cookies = { ...req.session.cookie, ...req.cookies, user: req.user };
-    res.send({ cookies });
+    res.send({ cookies: req.session.cookie, user: req.user });
   } catch (error: any) {
     res.status(401).json({ error: error.message });
   }
