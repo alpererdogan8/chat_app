@@ -2,10 +2,12 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import "./database/mongoose";
 import Authentication from "./routes/authentication";
+import ChatRooms from "./routes/chat-rooms";
+import Message from "./routes/message";
 import AuthService from "./services/AuthService";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import session, { SessionOptions } from "express-session";
+import session from "express-session";
 import { config } from "dotenv";
 import MongoStore from "connect-mongo";
 import { MONGO_URI } from "./database/mongoose";
@@ -38,9 +40,8 @@ app.use(AuthService.initialize);
 app.use(AuthService.session);
 
 app.use("/api/v1/auth", Authentication);
-app.get("/", async (req: Request, res: Response) => {
-  res.json({ data: "deneme" });
-});
+app.use("/api/v1/room", ChatRooms);
+app.use("/api/v1/message", Message);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
