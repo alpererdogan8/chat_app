@@ -37,8 +37,8 @@ class AuthService extends MainService<IUserModal> {
   login() {
     return passportConfig.authenticate("local");
   }
-  isOnline(state: boolean) {
-    return this.modal.updateOne({ isOnline: state });
+  async isOnline(userId: string, state: boolean) {
+    return await this.update(userId, { isOnline: state });
   }
 }
 
