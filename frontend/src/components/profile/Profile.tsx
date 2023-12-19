@@ -6,6 +6,7 @@ import { useTheme } from "@/context/theme-provider";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
+import { useAuth } from "@/context/auth-provider";
 
 export const Profile = () => {
   const { theme, setTheme } = useTheme();
@@ -13,11 +14,12 @@ export const Profile = () => {
   const refDropdown = useRef<HTMLDivElement>(null);
   const refDropdownForButton = useRef<HTMLButtonElement>(null);
   useOnClickOutside(refDropdown, refDropdownForButton, () => setDropdown(true));
+  const { logout, profile } = useAuth();
 
   return (
     <Cards className="flex flex-col">
       <div className="w-full py-6 px-2.5   flex justify-between items-center">
-        <Cards.Header className="font-semibold text-sm lg:text-base">Alper Erdoğan</Cards.Header>
+        <Cards.Header className="font-semibold text-sm lg:text-base">{profile?.user.username}</Cards.Header>
         <Cards.Content className="flex gap-2 w-full justify-end">
           <CreateRoom />
           <Button
@@ -42,6 +44,7 @@ export const Profile = () => {
                   "border-border flex-col border rounded-sm  bg-background  w-40 h-auto",
                 )}>
                 <Button
+                  onClick={logout}
                   variantType="outline"
                   className="border-x-0 border-y-0 rounded-none w-full flex justify-center items-center  "
                   size="sm">
