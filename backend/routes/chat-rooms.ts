@@ -9,6 +9,15 @@ router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
     res.send(error);
   }
 });
+router.get("/:roomId/", async (req: Request, res: Response) => {
+  const { roomId } = req.params;
+  try {
+    res.send({ data: await RoomService.getRoom(roomId) });
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 router.post("/create", async (req: Request, res: Response, next: NextFunction) => {
   const { name } = req.body;
   try {
@@ -32,8 +41,8 @@ router.patch("/:id/edit", async (req: Request, res: Response, next: NextFunction
   const { id } = req.params;
   const { name } = req.body;
   try {
-    await RoomService.updateRoomName(id, name);
-    res.status(200).json({ status: 200, message: "room edited successfully" });
+    const response = await RoomService.updateRoomName(id, name);
+    res.status(200).json({ status: 200, message: response });
   } catch (error) {
     res.send(error);
   }
@@ -53,15 +62,6 @@ router.post("/:roomId/leave", async (req: Request, res: Response) => {
   try {
     const data = await RoomService.leaveRoom(req.user?._id, roomId);
     res.json({ data });
-  } catch (error) {
-    res.send(error);
-  }
-});
-
-router.get("/chat-rooms/:id", (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    res.send({ data: RoomService.getRoom(id) });
   } catch (error) {
     res.send(error);
   }
