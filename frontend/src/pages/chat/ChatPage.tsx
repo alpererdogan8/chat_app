@@ -1,77 +1,64 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chat } from "@/components/chat/Chat";
 import { ContainerCard } from "@/components/chat/ContainerCards";
+import { Participants } from "@/components/chat/Participants";
 import { RoomHeader } from "@/components/chat/RoomHeader";
 import { SendMessage } from "@/components/chat/SendMessage";
 import { Profile } from "@/components/profile/Profile";
+import { useAuth } from "@/context/auth-provider";
+import { useMessage } from "@/context/chat/messages-provider";
 
-// type UserType = {
-//   userName: string;
-//   userId: string;
-//   userMessageData: string[];
-//   userRooms: RoomType;
-//   userIsOnline: boolean;
-// };
-
-// type RoomType = {
-//   roomAdmin: Pick<UserType, "userId">;
-//   roomName: string;
-//   roomId: string;
-//   roomMessageData: MessageType[];
-//   roomUsers: UserType;
-// };
-
-// type MessageType = {
-//   message: string;
-//   messageTime: string;
-//   messageSender: string;
-// };
-
-// const data: RoomType = [
-//   { roomAdmin: { userId: "1" }, roomName: "Room1", roomId: "1", roomMessageData: [], roomUsers: [] },
-// ];
+import { useRooms } from "@/context/chat/rooms-provider";
+import { useLayoutEffect, useState } from "react";
 
 export const ChatPage = () => {
+  const { getRooms, isLogin } = useRooms();
+  const { messageData } = useMessage();
+  const { profile } = useAuth();
+
+  const [chatrooms, setChatrooms] = useState<any>();
+  useLayoutEffect(() => {
+    (async () => {
+      const { data } = await getRooms();
+      setChatrooms(data);
+    })();
+  }, [getRooms, isLogin, messageData?.name]);
+
   return (
-    <div className="w-full grid bg-background grid-cols-12 border-x-[1px] h-[100dvh]">
+    <div className="w-full grid bg-background grid-cols-12 h-[100dvh]">
       <div className="col-span-3 hidden  md:flex md:flex-col ">
         <Profile />
         <div className="w-full h-[84dvh] overflow-y-auto">
-          <ContainerCard newNotification={10} isLogin={true} isRoom={true} isFounder={true} />
-          <ContainerCard newNotification={10} isLogin={false} isRoom={true} isFounder={false} />
-          <ContainerCard newNotification={3} isLogin={true} isRoom={true} isFounder={true} />
-          <ContainerCard isLogin={false} isRoom={true} isFounder={false} />
-          <ContainerCard newNotification={8} isLogin={true} isRoom={true} isFounder={true} />
-          <ContainerCard newNotification={1} isLogin={false} isRoom={true} isFounder={false} />
-          <ContainerCard newNotification={2} isLogin isRoom={true} isFounder={false} />
-          <ContainerCard newNotification={5} isLogin={true} isRoom={true} isFounder={true} />
-          <ContainerCard newNotification={100} isLogin isRoom={true} isFounder={false} />
-          <ContainerCard newNotification={6} isLogin={false} isRoom={true} isFounder={true} />
-          <ContainerCard isLogin isRoom={true} isFounder={false} />
-          <ContainerCard isLogin isRoom={true} isFounder={false} />
-          <ContainerCard isLogin={false} isRoom={true} isFounder={true} />
-          <ContainerCard newNotification={1000} isLogin={false} isRoom={true} isFounder={false} />
-          <ContainerCard newNotification={1} isLogin isRoom={true} isFounder={true} />
+          {chatrooms &&
+            chatrooms.data.map((room: any) => {
+              const isRoomLogin = room.users.find((user: any) => user._id === profile?.user?._id);
+
+              return (
+                <ContainerCard
+                  key={room._id}
+                  roomId={room._id}
+                  isFounder={profile?.user?._id === room.admin._id}
+                  roomName={room.name}
+                  isRoom={true}
+                  isLogin={isRoomLogin}
+                />
+              );
+            })}
         </div>
       </div>
 
       <div className="col-span-12 md:col-span-6 flex flex-col justify-between border-x-[1px]">
-        <RoomHeader isFounder={true} />
+        <RoomHeader />
         <Chat />
         <SendMessage />
       </div>
       <div className="w-full h-[100dvh] overflow-y-auto flex-col  col-span-3 hidden md:flex">
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
-        <ContainerCard requiredOnline />
+        {messageData?.users?.map((participant: any) => {
+          return (
+            <Participants key={participant?._id} isOnline={participant?.isOnline} username={participant?.username} />
+          );
+        })}
       </div>
     </div>
   );
