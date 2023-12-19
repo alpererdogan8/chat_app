@@ -34,6 +34,7 @@ export const Chat = () => {
           return (
             <>
               <MessageBox
+                key={message._id}
                 message={message.message}
                 timestamp={message.timestamp}
                 sender={message.sender.username}
