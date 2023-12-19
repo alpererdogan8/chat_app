@@ -9,7 +9,13 @@ class RoomService extends MainService<IChatRoomSchema> {
     return this.load();
   }
   async getRoom(id: string) {
-    return this.find(id);
+    return this.modal
+      .findById(id)
+      .populate({
+        path: "users",
+        select: "username isOnline",
+      })
+      .exec();
   }
   async createRoom({ admin, name }: Pick<IChatRoomSchema, "admin" | "name">): Promise<any> {
     return this.insert({ admin, name });
@@ -18,7 +24,8 @@ class RoomService extends MainService<IChatRoomSchema> {
     return this.delete(id);
   }
   async updateRoomName(id: string, name: string): Promise<any> {
-    return this.update(id, { name });
+    await this.update(id, { $set: { name: name } });
+    return this.getRoom(id);
   }
   async joinRoom(user: string, roomId: string): Promise<any> {
     await this.update(roomId, { $push: { users: user } });
