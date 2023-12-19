@@ -1,6 +1,8 @@
 import { PlusIcon, Shield, Trash2Icon, X } from "lucide-react";
 import { Button } from "../core-component/Button";
 import { Cards } from "../core-component/Cards";
+import { useRooms } from "@/context/chat/rooms-provider";
+import { useMessage } from "@/context/chat/messages-provider";
 
 type ContainerCardType = {
   requiredOnline?: boolean;
@@ -8,6 +10,8 @@ type ContainerCardType = {
   isLogin?: boolean;
   isRoom?: boolean;
   newNotification?: number;
+  roomName?: string;
+  roomId?: string;
 };
 
 const Notification = ({ newNotification }: { newNotification: number }) => {
@@ -23,10 +27,23 @@ const Notification = ({ newNotification }: { newNotification: number }) => {
   );
 };
 
-export const ContainerCard = ({ requiredOnline, newNotification, isFounder, isRoom, isLogin }: ContainerCardType) => {
+export const ContainerCard = ({
+  requiredOnline,
+  roomName,
+  newNotification,
+  isFounder,
+  isRoom,
+  isLogin,
+  roomId,
+}: ContainerCardType) => {
+  const { joinRoom, leaveRoom, deleteRoom } = useRooms();
+  const { getMessage } = useMessage();
+
   return (
-    <Cards className="w-full cursor-pointer  border-b border-border hover:bg-secondary px-4 py-4 flex items-center justify-between h-[90px] border-b-border ">
-      <Cards.Header className="">Oda 1</Cards.Header>
+    <Cards
+      onClick={() => getMessage(roomId!)}
+      className="w-full cursor-pointer  border-b border-border hover:bg-secondary px-4 py-4 flex items-center justify-between h-[90px] border-b-border ">
+      <Cards.Header className="">{roomName}</Cards.Header>
       <Cards.Content className="flex justify-end gap-2">
         {isFounder && isRoom ? (
           <div className="relative flex items-center">
@@ -39,7 +56,11 @@ export const ContainerCard = ({ requiredOnline, newNotification, isFounder, isRo
                 You're admin
               </Cards>
             </Button>
-            <Button size="icon" className="relative group" variantType="outline">
+            <Button
+              onClick={() => deleteRoom(roomId as string)}
+              size="icon"
+              className="relative group"
+              variantType="outline">
               <Trash2Icon />
               <Cards
                 bordered
@@ -53,7 +74,11 @@ export const ContainerCard = ({ requiredOnline, newNotification, isFounder, isRo
             {isLogin ? (
               <div className=" relative flex justify-center items-center">
                 {(newNotification as number) > 0 ? <Notification newNotification={newNotification as number} /> : null}
-                <Button size="icon" className="relative group" variantType="outline">
+                <Button
+                  onClick={() => leaveRoom(roomId as string)}
+                  size="icon"
+                  className="relative group"
+                  variantType="outline">
                   <X />
                   <Cards
                     bordered
@@ -63,7 +88,11 @@ export const ContainerCard = ({ requiredOnline, newNotification, isFounder, isRo
                 </Button>
               </div>
             ) : (
-              <Button size="icon" className="group relative" variantType="outline">
+              <Button
+                onClick={() => joinRoom(roomId as string)}
+                size="icon"
+                className="group relative"
+                variantType="outline">
                 <PlusIcon />
 
                 <Cards
@@ -82,11 +111,3 @@ export const ContainerCard = ({ requiredOnline, newNotification, isFounder, isRo
     </Cards>
   );
 };
-<Button size="icon" className="group" variantType="outline">
-  <PlusIcon />
-  <Cards
-    bordered
-    className="hidden focus:hidden group-hover:inline-flex group-active:hidden  rounded-md ml-20 mt-20   bg-background absolute px-4 py-1 text-sm">
-    Add Room
-  </Cards>
-</Button>;
