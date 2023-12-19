@@ -18,16 +18,16 @@ class MainService<M> {
   }
 
   async update(id: string, obj: UpdateQuery<Document>): Promise<any> {
-    return this.modal.findByIdAndUpdate(id, obj).exec();
+    return this.modal.findByIdAndUpdate(id, obj);
   }
 
   async find(id: string): Promise<Document | null> {
-    return this.modal.findById(id).exec();
+    return this.modal.findById(id);
   }
 
   async findBy<T extends keyof M>(property: T, value: any): Promise<Document | null> {
     const filter: FilterQuery<Document> = { [property]: value };
-    return this.modal.findOne(filter).exec();
+    return this.modal.findOne(filter);
   }
 
   async delete(id: string): Promise<any> {
@@ -35,7 +35,7 @@ class MainService<M> {
   }
 
   async query(obj: object): Promise<Document[]> {
-    return this.modal.find(obj).exec();
+    return this.modal.find(obj);
   }
 }
 
