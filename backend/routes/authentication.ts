@@ -15,7 +15,7 @@ router.post("/signup", async (req: Request, res: Response) => {
 
 router.get("/user-profile", isAuth, (req: Request, res: Response) => {
   try {
-    res.send({ cookies: req.session.cookie, user: req.user });
+    res.send({ cookies: { ...req.cookies, ...req.session.cookie }, user: req.user });
   } catch (error: any) {
     res.status(401).json({ error: error.message });
   }
@@ -23,7 +23,7 @@ router.get("/user-profile", isAuth, (req: Request, res: Response) => {
 
 router.post("/login", AuthService.login(), async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await AuthService.isOnline(true);
+    await AuthService.isOnline(req.user?._id, true);
     res.status(200).redirect("/api/v1/auth/user-profile");
   } catch (error: any) {
     res.status(401).json({ error: error.message });
@@ -32,9 +32,9 @@ router.post("/login", AuthService.login(), async (req: Request, res: Response, n
 
 router.post("/logout", isAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await AuthService.isOnline(false);
+    await AuthService.isOnline(req.user?._id, false);
     req.logout(() => {
-      res.status(204).json({});
+      res.status(204).clearCookie("connect.sid").json({});
     });
   } catch (error) {
     next(error);
