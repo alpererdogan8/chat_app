@@ -11,15 +11,14 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const CreateRoom = () => {
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const openModal = () => {
     setIsOpen(true);
   };
-
   const closeModal = () => {
     setIsOpen(false);
   };
-
   const Modal: FC<ModalProps> = ({ ...props }) => {
     const { createRoom } = useRooms();
 
